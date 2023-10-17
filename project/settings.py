@@ -38,6 +38,7 @@ INSTALLED_APPS = [
     #     Local applications
     "social.users",
     "social.profiles",
+    "social.posts",
 ]
 
 MIDDLEWARE = [
