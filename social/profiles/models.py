@@ -1,7 +1,7 @@
 from django.db import models
 from django.urls import reverse
 from django.utils.text import slugify
-from django_countries.fields import CountryField
+# from django_countries import fields
 from phonenumber_field import modelfields
 
 from .profile_photo_api import profile_photo_path
@@ -12,7 +12,7 @@ class Profile(models.Model):
     slug = models.SlugField(unique=True, blank=True, null=True)
     profile_photo = models.ImageField(upload_to=profile_photo_path, default="profile_default.png")
     bio = models.TextField(max_length=300, blank=True)
-    country = CountryField(default="", blank=True, null=True)
+    country = models.CharField(max_length=30, default="", blank=True, null=True)
     city = models.CharField(max_length=30)
     phone_number = modelfields.PhoneNumberField(blank=True)  # country code, national_number
     timestamp = models.DateTimeField(auto_now_add=True)
