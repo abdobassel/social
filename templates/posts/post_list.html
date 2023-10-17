@@ -1,7 +1,8 @@
 {% extends 'base.html' %}
 {% block body %}
     <h1>Post List</h1>
-
+    <a class="button secondaryAction btn btn-secondary"
+       href="{% url 'posts:post-create' %}">Create Post</a>
     <ul>
         {% for post in posts %}
             <li>
@@ -10,9 +11,12 @@
                     <img src="{{ post.image.url }}" alt="{{ post.content }}" style="max-width: 200px;">
                 {% endif %}
                 <p>Content: {{ post.content }}</p>
-                <p>Likes: {{ post.likes }}</p>
+                <p>Likes: {{ post.likes.count }}</p>
                 <p>Views: {{ post.views }}</p>
                 <p>Published on: {{ post.timestamp }}</p>
+                <a class="button btn btn-primary" href="{% url 'posts:post-detail' id=post.id %}">
+                    View Details
+                </a>
             </li>
         {% endfor %}
     </ul>

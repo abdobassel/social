@@ -1,57 +1,53 @@
-import shortuuid
-from django.http import JsonResponse
-from django.shortcuts import render
-from django.utils.text import slugify
-from django.utils.timesince import timesince
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.urls import reverse_lazy
+from django.views.generic import CreateView, DetailView, ListView
 
+from .forms import PostForms
 from .models import Post
 
 
-def post_list(request):
-    posts = Post.objects.all()
-    context = {"posts": posts}
-    return render(request, "posts/post_list.html", context=context)
+class PostListView(ListView):
+    model = Post
+    template_name = "posts/post_list.html"
+    context_object_name = "posts"
+    ordering = ["-timestamp"]  # Order by timestamp in descending order
 
 
-def post_create(request):
-    """
-    It extracts and processes data from the request, including post-content, visibility settings, and an optional
-    image The view generates a unique identifier for the post, creates a new Post object with the provided data,
-    and stores it in the database If both the content and image are provided-the view responds with a structured
-    JSON response-containing comprehensive details about the newly created post, such as content, image URL,
-    In case either the content or image is missing, the view returns a JSON error response For non-POST
-    requests, the view responds with a JSON acknowledgment that data has been received.
-    """
-    if request.method == "POST":
-        content = request.POST.get("post-content")
-        visibility = request.POST.get("post-visibility")
-        image = request.FILES.get("post-image")
-        uuid_key = shortuuid.uuid()
-        unique_id = uuid_key[:5]
-        if content or image:
-            post = Post(
-                content=content,
-                visibility=visibility,
-                image=image,
-                slug=slugify(content) + "-" + str(unique_id.lower()),
-            )
-            post.save()
-            return JsonResponse(
-                {
-                    "post": {
-                        "content": post.content,
-                        "image": image.url,
-                        "username": post.user.username,
-                        "profile_photo": post.user.profile.profile_photo.url,
-                        "timestamp": timesince(post.timestamp),
-                        "id": post.id,
-                    }
-                }
-            )
-        else:
-            return JsonResponse({"error": f"{image} or {content} does not exist!"})
+class DetailPostView(DetailView):
+    model = Post
+    template_name = "posts/post_detail.html"
+    context_object_name = "post"
 
-    return JsonResponse({"data": "sent"})
+    def get_object(self, queryset=None):
+        # Use both 'id' and 'slug' for filtering the Post object
+        return Post.objects.get(id=self.kwargs["id"])
 
-    # context = {""}
-    # return render(request, "posts/post_create.html", context=context)
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context["id"] = self.kwargs["id"]
+        return context
+
+    # def get_context_data(self, **kwargs):
+    #     context = super().get_context_data(**kwargs)
+    #     # Assign the 'id' field of the Post model to the context for use in the template
+    #     context["pk"] = self.object.id
+    #     return context
+
+
+class CreatePostView(LoginRequiredMixin, CreateView):
+    model = Post
+    form_class = PostForms
+    template_name = "posts/post_create.html"
+    success_url = reverse_lazy("posts:post-list")
+    ordering = ["-timestamp"]  # Order by timestamp in descending order
+
+    def form_valid(self, form):
+        post = form.save(commit=False)
+        post.user = self.request.user
+        post.save()
+        return super().form_valid(form)
+
+    # def get_context_data(self, **kwargs):
+    #     context = super().get_context_data(**kwargs)
+    #     context["latest_posts"] = Post.objects.order_by("-timestamp")[:5]  # Get the latest 5 posts
+    #     return context
