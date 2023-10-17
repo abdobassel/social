@@ -1,7 +1,6 @@
 from django.db import models
 from django.urls import reverse
 from django.utils.text import slugify
-# from django_countries import fields
 from phonenumber_field import modelfields
 
 from .profile_photo_api import profile_photo_path
