@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+
+{% block body %}
+
+    <h1>Profile Detail</h1>
+    <p>Name: {{ profile.user.username }}</p>
+    <p>City: {{ profile.city }}</p>
+    <p>Country: {{ profile.country.name }}</p>
+    <p>Bio: {{ profile.bio }}</p>
+    <p>Birthday: {{ profile.birthday|date:"F j, Y" }}</p>
+    {% if user.is_authenticated and user == profile.user %}
+        <a href="{% url 'profiles:profile-update' pk=profile.pk %}">Edit Profile</a>
+    {% endif %}
+{% endblock body %}

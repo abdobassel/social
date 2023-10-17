@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+{% block body %}
+    <h1>Post List</h1>
+
+    <ul>
+        {% for post in posts %}
+            <li>
+                <p>User: {{ post.user.username }}</p>
+                {% if post.image %}
+                    <img src="{{ post.image.url }}" alt="{{ post.content }}" style="max-width: 200px;">
+                {% endif %}
+                <p>Content: {{ post.content }}</p>
+                <p>Likes: {{ post.likes }}</p>
+                <p>Views: {{ post.views }}</p>
+                <p>Published on: {{ post.timestamp }}</p>
+            </li>
+        {% endfor %}
+    </ul>
+
+{% endblock body %}
