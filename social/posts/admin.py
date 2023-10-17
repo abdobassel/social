@@ -4,11 +4,19 @@ from .models import Gallery, Post
 
 
 class GalleryAdmin(admin.ModelAdmin):
-    list_display = ["post", "is_active", "timestamp"]
+    list_display = [
+        "post",
+        "is_active",
+        "timestamp",
+    ]
 
 
 class PostAdmin(admin.ModelAdmin):
-    list_display = ["truncated_content", "user", "timestamp"]
+    list_display = [
+        "truncated_content",
+        "user",
+        "timestamp",
+    ]
 
     def truncated_content(self, obj):
         """
