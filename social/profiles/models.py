@@ -15,7 +15,7 @@ class Profile(models.Model):
     city = models.CharField(max_length=30)
     phone_number = modelfields.PhoneNumberField(blank=True)  # country code, national_number
     timestamp = models.DateTimeField(auto_now_add=True)
-    birthday = models.DateField(auto_now=False, blank=True)
+    birthday = models.DateField(auto_now=False, null=True)
 
     def __str__(self):
         return f"{self.user.username}"
