@@ -162,6 +162,7 @@ cython_debug/
 
 models.png
 media
+.vscode
 .idea
 .DS_Store
 templates/.DS_Store
