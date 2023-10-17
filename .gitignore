@@ -163,3 +163,5 @@ cython_debug/
 models.png
 media
 .idea
+.DS_Store
+templates/.DS_Store
