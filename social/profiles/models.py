@@ -3,7 +3,7 @@ from django.urls import reverse
 from django.utils.text import slugify
 from phonenumber_field import modelfields
 
-from .profile_photo_api import profile_photo_path
+from social.utils.profile_photo_api import profile_photo_path
 
 
 class Profile(models.Model):
