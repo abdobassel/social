@@ -64,13 +64,17 @@ django-simple-history==3.4.0
 execnet==2.0.2
     # via pytest-xdist
 factory-boy==3.3.0
-    # via -r requirements.in
+    # via
+    #   -r requirements.in
+    #   pytest-factoryboy
 faker==19.10.0
     # via factory-boy
 gunicorn==20.1.0
     # via -r requirements.in
 idna==3.4
     # via requests
+inflection==0.5.1
+    # via pytest-factoryboy
 iniconfig==2.0.0
     # via pytest
 oauthlib==3.2.2
@@ -95,11 +99,14 @@ pytest==7.4.2
     # via
     #   pytest-cov
     #   pytest-django
+    #   pytest-factoryboy
     #   pytest-socket
     #   pytest-xdist
 pytest-cov==4.1.0
     # via -r requirements.in
 pytest-django==4.5.2
+    # via -r requirements.in
+pytest-factoryboy==2.6.0
     # via -r requirements.in
 pytest-socket==0.6.0
     # via -r requirements.in
@@ -135,6 +142,7 @@ typing-extensions==4.8.0
     # via
     #   dj-database-url
     #   django-countries
+    #   pytest-factoryboy
 urllib3==2.0.6
     # via
     #   requests
