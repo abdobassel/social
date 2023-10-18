@@ -27,12 +27,6 @@ class DetailPostView(DetailView):
         context["id"] = self.kwargs["id"]
         return context
 
-    # def get_context_data(self, **kwargs):
-    #     context = super().get_context_data(**kwargs)
-    #     # Assign the 'id' field of the Post model to the context for use in the template
-    #     context["pk"] = self.object.id
-    #     return context
-
 
 class CreatePostView(LoginRequiredMixin, CreateView):
     model = Post
@@ -46,8 +40,3 @@ class CreatePostView(LoginRequiredMixin, CreateView):
         post.user = self.request.user
         post.save()
         return super().form_valid(form)
-
-    # def get_context_data(self, **kwargs):
-    #     context = super().get_context_data(**kwargs)
-    #     context["latest_posts"] = Post.objects.order_by("-timestamp")[:5]  # Get the latest 5 posts
-    #     return context
