@@ -8,7 +8,7 @@ from .models import Post
 
 class PostListView(ListView):
     model = Post
-    template_name = "posts/post_list.html"
+    template_name = "posts/home.html"
     context_object_name = "posts"
     ordering = ["-timestamp"]  # Order by timestamp in descending order
 

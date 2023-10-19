@@ -1,4 +1,5 @@
 {% extends "account/base.html" %}
+{% load crispy_forms_filters %}
 
 {% load i18n %}
 {% load crispy_forms_tags %}
@@ -12,18 +13,13 @@
         {% blocktranslate %}Already have an account? Then please <a href="{{ login_url }}">sign in</a>
             .{% endblocktranslate %}
     </p>
-    <form class="signup"
-          id="signup_form"
-          method="post"
-          action="{% url 'account_signup' %}">
+    <form class="signup" id="signup_form" method="post" action="{% url 'account_signup' %}">
         {% csrf_token %}
         {{ form|crispy }}
         {% if redirect_field_value %}
-            <input type="hidden"
-                   name="{{ redirect_field_name }}"
-                   value="{{ redirect_field_value }}"/>
+            <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
         {% endif %}
-        <button class="btn btn-primary" type="submit">{% translate "Sign Up" %} »</button>
+        <button type="button" class="btn btn-dark" type="submit">{% translate "Sign Up" %} »</button>
     </form>
 {% endblock inner %}
 

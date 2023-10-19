@@ -12,7 +12,7 @@
             {% if redirect_field_value %}
                 <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
             {% endif %}
-            <button class="primaryAction btn btn-primary" type="submit">{% translate "Sign In" %}</button>
+            <button class="btn btn-dark" type="submit">{% translate "Sign In" %}</button>
             <a class="button secondaryAction btn btn-secondary"
                href="{% url 'account_reset_password' %}">{% translate "Forgot Password?" %}</a>
         </form>
