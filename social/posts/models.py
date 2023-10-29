@@ -16,12 +16,5 @@ class Post(models.Model):
     visibility = models.CharField(max_length=10, choices=Visibility.choices, default=Visibility.EVERYONE)
     timestamp = models.DateTimeField(auto_now_add=True)
 
-    # def __str__(self):
-    #     words = self.content.split()
-    #     short_content = " ".join(words[:5])
-    #     if len(words) > 5:
-    #         short_content += " ..."
-    #     return short_content
-
     def __str__(self):
         return str(self.content)[:5]

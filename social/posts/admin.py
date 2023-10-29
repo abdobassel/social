@@ -4,11 +4,7 @@ from .models import Post
 
 
 class PostAdmin(admin.ModelAdmin):
-    list_display = [
-        "short_content",
-        "user",
-        "timestamp",
-    ]
+    list_display = ["short_content", "user", "timestamp"]
 
     def short_content(self, obj):
         words = obj.content.split()
