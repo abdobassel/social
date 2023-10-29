@@ -1,10 +1,10 @@
 from django.contrib import admin
 
-from .models import Post
+from .models import Post, PostHashtag
 
 
 class PostAdmin(admin.ModelAdmin):
-    list_display = ["short_content", "user", "timestamp"]
+    list_display = ["short_content", "user", "timestamp", "views"]
 
     def short_content(self, obj):
         words = obj.content.split()
@@ -17,3 +17,10 @@ class PostAdmin(admin.ModelAdmin):
 
 
 admin.site.register(Post, PostAdmin)
+
+
+class PostHashTagAdmin(admin.ModelAdmin):
+    list_display = ["name"]
+
+
+admin.site.register(PostHashtag, PostHashTagAdmin)

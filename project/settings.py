@@ -161,6 +161,8 @@ AUTH_COOKIE_SAMESITE = "None"  # Strict if we have the same domain
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": ("social.users.authentications.CustomJWTAuthentication",),
     "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
+    "DEFAULT_RENDERER_CLASSES": ("rest_framework.renderers.JSONRenderer",),
+    "DEFAULT_PARSER_CLASSES": ("rest_framework.parsers.JSONParser",),
 }
 DJOSER = {
     "PASSWORD_RESET_CONFIRM_URL": "password-reset/{uid}/{token}",
