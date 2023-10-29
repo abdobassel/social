@@ -29,7 +29,6 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     #     3rd party libraries
     "rest_framework",
-    "rest_framework_simplejwt.token_blacklist",
     "djoser",
     "django_extensions",
     # "debug_toolbar",
