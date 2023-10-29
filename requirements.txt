@@ -8,27 +8,21 @@ asgiref==3.7.2
     # via
     #   django
     #   django-countries
-beautifulsoup4==4.12.2
-    # via django-bootstrap-v5
 certifi==2023.7.22
     # via
     #   requests
     #   sentry-sdk
 cffi==1.16.0
     # via cryptography
-charset-normalizer==3.3.0
+charset-normalizer==3.3.1
     # via requests
 coverage[toml]==7.3.2
     # via
     #   coverage
     #   pytest-cov
-crispy-bootstrap5==0.7
-    # via -r requirements.in
-cryptography==41.0.4
-    # via
-    #   pyjwt
-    #   social-auth-core
-defusedxml==0.7.1
+cryptography==41.0.5
+    # via social-auth-core
+defusedxml==0.8.0rc2
     # via
     #   python3-openid
     #   social-auth-core
@@ -37,11 +31,7 @@ dj-database-url==2.1.0
 django==4.2.6
     # via
     #   -r requirements.in
-    #   crispy-bootstrap5
     #   dj-database-url
-    #   django-allauth
-    #   django-bootstrap-v5
-    #   django-crispy-forms
     #   django-debug-toolbar
     #   django-denied
     #   django-extensions
@@ -49,16 +39,8 @@ django==4.2.6
     #   djangorestframework-simplejwt
     #   djoser
     #   social-auth-app-django
-django-allauth==0.57.0
-    # via -r requirements.in
-django-bootstrap-v5==1.0.11
-    # via -r requirements.in
 django-countries==7.5.1
     # via -r requirements.in
-django-crispy-forms==2.0
-    # via
-    #   -r requirements.in
-    #   crispy-bootstrap5
 django-debug-toolbar==4.2.0
     # via -r requirements.in
 django-denied==1.2
@@ -87,9 +69,9 @@ factory-boy==3.3.0
     # via
     #   -r requirements.in
     #   pytest-factoryboy
-faker==19.10.0
+faker==19.12.0
     # via factory-boy
-gunicorn==20.1.0
+gunicorn==21.2.0
     # via -r requirements.in
 idna==3.4
     # via requests
@@ -102,8 +84,10 @@ oauthlib==3.2.2
     #   requests-oauthlib
     #   social-auth-core
 packaging==23.2
-    # via pytest
-pillow==10.0.1
+    # via
+    #   gunicorn
+    #   pytest
+pillow==10.1.0
     # via -r requirements.in
 pluggy==1.3.0
     # via pytest
@@ -113,12 +97,11 @@ pycparser==2.21
     # via cffi
 pygraphviz==1.11
     # via -r requirements.in
-pyjwt[crypto]==2.8.0
+pyjwt==2.8.0
     # via
-    #   django-allauth
     #   djangorestframework-simplejwt
     #   social-auth-core
-pytest==7.4.2
+pytest==7.4.3
     # via
     #   pytest-cov
     #   pytest-django
@@ -140,23 +123,16 @@ python-dateutil==2.8.2
     #   faker
     #   time-machine
 python3-openid==3.2.0
-    # via
-    #   django-allauth
-    #   social-auth-core
+    # via social-auth-core
 pytz==2023.3.post1
     # via djangorestframework
 requests==2.31.0
     # via
-    #   django-allauth
     #   requests-oauthlib
     #   social-auth-core
 requests-oauthlib==1.3.1
-    # via
-    #   django-allauth
-    #   social-auth-core
-sentry-sdk==1.28.1
-    # via -r requirements.in
-shortuuid==1.0.11
+    # via social-auth-core
+sentry-sdk==1.32.0
     # via -r requirements.in
 six==1.16.0
     # via python-dateutil
@@ -164,8 +140,6 @@ social-auth-app-django==5.4.0
     # via djoser
 social-auth-core==4.4.2
     # via social-auth-app-django
-soupsieve==2.5
-    # via beautifulsoup4
 sqlparse==0.4.4
     # via
     #   django
@@ -177,10 +151,7 @@ typing-extensions==4.8.0
     #   dj-database-url
     #   django-countries
     #   pytest-factoryboy
-urllib3==2.0.6
+urllib3==2.0.7
     # via
     #   requests
     #   sentry-sdk
-
-# The following packages are considered to be unsafe in a requirements file:
-# setuptools
