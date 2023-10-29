@@ -3,17 +3,12 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import include, path
-from django.views.generic import TemplateView
-
-from social.app.views import app
 
 urlpatterns = [
-    path("accounts/", include("allauth.urls")),
     path("admin/", admin.site.urls),
-    path("", include("social.posts.urls", namespace="posts")),
-    path("home/", TemplateView.as_view(template_name="pages/home.html"), name="home"),
-    path("about/", TemplateView.as_view(template_name="pages/about.html"), name="about"),
-    path("app/", app, name="app"),
+    path("api-auth/v1/rest/", include("rest_framework.urls")),
+    path("auth/", include("djoser.urls")),
+    path("api-auth/", include("social.users.urls")),
 ]
 
 # Enable the debug toolbar only in DEBUG mode.

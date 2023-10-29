@@ -21,13 +21,12 @@
                 <a type="button" class="btn btn-danger"
                    href="{% url 'account_logout' %}">{% translate "Sign Out" %}</a>
             {% else %}
+                <a id="sign-up-link" class="btn btn-dark"
+                   href="{% url 'account_signup' %}">{% translate "Sign Up" %}</a>
+                <a id="log-in-link" class="btn btn-dark  mr-4"
+                   href="{% url 'account_login' %}">{% translate "Sign In" %}</a>
                 <div class="btn-group" role="group" aria-label="Basic example">
-
-                    <a id="sign-up-link" class="btn btn-dark"
-                       href="{% url 'account_signup' %}">{% translate "Sign Up" %}</a>
-                    <p>.</p>
-                    <a id="log-in-link" class="btn btn-dark"
-                       href="{% url 'account_login' %}">{% translate "Sign In" %}</a>
+                    {#                    <p>.</p>#}
                 </div>
             {% endif %}
         </div>

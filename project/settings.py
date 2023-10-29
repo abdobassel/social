@@ -1,3 +1,4 @@
+from datetime import timedelta
 import os
 from pathlib import Path
 
@@ -27,11 +28,11 @@ INSTALLED_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
     #     3rd party libraries
-    "allauth",
-    "allauth.account",
-    "allauth.socialaccount",  # Needed by default templates even though we're not using a social provider.
+    "rest_framework",
+    "rest_framework_simplejwt.token_blacklist",
+    "djoser",
     "django_extensions",
-    "debug_toolbar",
+    # "debug_toolbar",
     "crispy_forms",
     "crispy_bootstrap5",
     "django_countries",
@@ -49,16 +50,21 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    "allauth.account.middleware.AccountMiddleware",
-    "debug_toolbar.middleware.DebugToolbarMiddleware",
+    # "debug_toolbar.middleware.DebugToolbarMiddleware",
 ]
 
 ROOT_URLCONF = "project.urls"
 
+# Enable the debug toolbar only in DEBUG mode.
+if DEBUG and DEBUG_TOOLBAR:
+    INSTALLED_APPS.append("debug_toolbar")
+    MIDDLEWARE.insert(0, "debug_toolbar.middleware.DebugToolbarMiddleware")
+    INTERNAL_IPS = ["127.0.0.1"]
+
 TEMPLATES = [
     {
         "BACKEND": "django.template.backends.django.DjangoTemplates",
-        "DIRS": [BASE_DIR / "templates"],
+        "DIRS": [],
         "APP_DIRS": True,
         "OPTIONS": {
             "context_processors": [
@@ -66,12 +72,12 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
-                # `allauth` needs this from django
                 "django.template.context_processors.request",
             ],
         },
     },
 ]
+
 # As of Django 4.1, the cached loader is used in development mode.
 # Runserver works around this in some manner, but Gunicorn does not.
 # Override the loaders to get non-cached behavior.
@@ -82,7 +88,6 @@ if DEBUG:
         "django.template.loaders.filesystem.Loader",
         "django.template.loaders.app_directories.Loader",
     ]
-
 WSGI_APPLICATION = "project.wsgi.application"
 
 # Database https://docs.djangoproject.com/en/4.2/ref/settings/#databases
@@ -140,23 +145,32 @@ LOGGING = {
 
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 AUTH_USER_MODEL = "users.User"
-LOGIN_REDIRECT_URL = "home"
-AUTHENTICATION_BACKENDS = [
-    # Needed to log in by username in Django admin, regardless of `allauth`
-    # `allauth` specific authentication methods, such as login by email
-    "django.contrib.auth.backends.ModelBackend",
-    "allauth.account.auth_backends.AuthenticationBackend",
-]
 SIDE_ID = 1
-ACCOUNT_EMAIL_REQUIRED = True
-ACCOUNT_USERNAME_REQUIRED = True
-ACCOUNT_SIGNUP_PASSWORD_ENTER_TWICE = False
-ACCOUNT_SESSION_REMEMBER = True
-ACCOUNT_AUTHENTICATION_METHOD = "username_email"
-ACCOUNT_UNIQUE_EMAIL = True
-ACCOUNT_LOGOUT_REDIRECT_URL = "account_login"
-# ACCOUNT_EMAIL_VERIFICATION = "mandatory"
+# Authentication cookies and JWT
+SIMPLE_JWT = {
+    "AUTH_HEADER_TYPES": ("JWT",),
+    "JWT_ACCESS_TOKEN_LIFETIME": timedelta(hours=1),
+    "JWT_REFRESH_TOKEN_LIFETIME": timedelta(days=14),
+}
+AUTH_COOKIE = "access"
+AUTH_COOKIE_MAX_AGE = 60 * 60 * 24 * 14  # 14 days
+AUTH_COOKIE_SECURE = env("AUTH_COOKIE_SECURE")
+AUTH_COOKIE_HTTP_ONLY = env("AUTH_COOKIE_HTTP_ONLY")
+AUTH_COOKIE_PATH = "/"
+AUTH_COOKIE_SAMESITE = "None"  # Strict if we have the same domain
 
+REST_FRAMEWORK = {
+    "DEFAULT_AUTHENTICATION_CLASSES": ("social.users.authentications.CustomJWTAuthentication",),
+    "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
+}
+DJOSER = {
+    "PASSWORD_RESET_CONFIRM_URL": "password-reset/{uid}/{token}",
+    "SEND_ACTIVATION_EMAIL": True,
+    "ACTIVATION_URL": "activation/{uid}/{token}",
+    "USER_CREATE_PASSWORD_RETYPE": True,
+    "PASSWORD_RESET_CONFIRM_RETYPE": True,
+    "TOKEN_MODEL": None,
+}
 # django-extensions
 GRAPH_MODELS = {
     "app_labels": ["users", "profiles", "posts"],

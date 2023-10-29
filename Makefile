@@ -12,3 +12,5 @@ fcov:
 	@echo "Running fast coverage check"
 	@pytest --cov=social -n 4 --dist loadfile -q
 
+install:
+	pip install --upgrade pip && pip-compile requirements.in && pip install -r requirements.txt
