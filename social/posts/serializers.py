@@ -17,24 +17,39 @@ class PostHashtagSerializer(serializers.ModelSerializer):
 
 
 class PostSerializer(serializers.ModelSerializer):
-    user = UserSerializer()
-    hashtags = PostHashtagSerializer(many=True, read_only=True)
-    mentions = UserSerializer(many=True, read_only=True)
+    # user = UserSerializer()
+    hashtags = PostHashtagSerializer(many=True)
+
+    # mentions = UserSerializer(many=True)
 
     class Meta:
         model = Post
         fields = [
             "id",
             "user",
-            "slug",
+            # "slug",
             "likes",
-            "reposted",
-            "replies",
-            "mentions",
-            "hashtags",
             "views",
             "visibility",
             "timestamp",
+            "hashtags",
             "content",
             "image",
         ]
+
+    def create(self, validated_data):
+        # Extract mentioned users and hashtag data
+        hashtags_data = validated_data.pop("hashtags", [])
+        # Create the Post instance
+        post = Post.objects.create(**validated_data)
+        # Call custom methods to handle mentions and hashtags
+        self.handle_hashtags(post, hashtags_data)
+
+        return post
+
+    @staticmethod
+    def handle_hashtags(post, hashtags_data):
+        # Create and associate hashtags with the post
+        for hashtag_data in hashtags_data:
+            hashtag, created = PostHashtag.objects.get_or_create(**hashtag_data)
+            post.hashtags.add(hashtag)
