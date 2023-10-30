@@ -31,7 +31,7 @@ INSTALLED_APPS = [
     "rest_framework",
     "djoser",
     "django_extensions",
-    # "debug_toolbar",
+    "django_filters",
     "crispy_forms",
     "crispy_bootstrap5",
     "django_countries",
