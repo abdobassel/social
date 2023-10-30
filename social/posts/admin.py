@@ -5,7 +5,7 @@ from .models import Post, PostHashtag
 
 class PostAdmin(admin.ModelAdmin):
     list_display = ["short_content", "user", "timestamp", "views"]
-
+    list_per_page = 13
     def short_content(self, obj):
         words = obj.content.split()
         short_content = " ".join(words[:5])
