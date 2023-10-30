@@ -35,6 +35,7 @@ django==4.2.6
     #   django-debug-toolbar
     #   django-denied
     #   django-extensions
+    #   django-filter
     #   djangorestframework
     #   djangorestframework-simplejwt
     #   djoser
@@ -48,6 +49,8 @@ django-denied==1.2
 django-environ==0.11.2
     # via -r requirements.in
 django-extensions==3.2.3
+    # via -r requirements.in
+django-filter==23.3
     # via -r requirements.in
 django-simple-history==3.4.0
     # via -r requirements.in
@@ -110,7 +113,7 @@ pytest==7.4.3
     #   pytest-xdist
 pytest-cov==4.1.0
     # via -r requirements.in
-pytest-django==4.5.2
+pytest-django==4.6.0
     # via -r requirements.in
 pytest-factoryboy==2.6.0
     # via -r requirements.in
