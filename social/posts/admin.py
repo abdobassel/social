@@ -20,7 +20,7 @@ admin.site.register(Post, PostAdmin)
 
 
 class PostHashTagAdmin(admin.ModelAdmin):
-    list_display = ["name"]
+    list_display = ["name", "slug", "is_active", "hashtag_time"]
 
 
 admin.site.register(PostHashtag, PostHashTagAdmin)
