@@ -13,21 +13,18 @@ class UserSerializer(serializers.ModelSerializer):
 class PostHashtagSerializer(serializers.ModelSerializer):
     class Meta:
         model = PostHashtag
-        fields = ["id", "name"]
+        fields = ["id", "name", "slug", "is_active"]
 
 
 class PostSerializer(serializers.ModelSerializer):
     # user = UserSerializer()
     hashtags = PostHashtagSerializer(many=True)
 
-    # mentions = UserSerializer(many=True)
-
     class Meta:
         model = Post
         fields = [
             "id",
             "user",
-            # "slug",
             "likes",
             "views",
             "visibility",
