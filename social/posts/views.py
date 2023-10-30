@@ -35,7 +35,11 @@ class PostListAPIView(APIView):
         search_query = request.query_params.get("search", None)
         if search_query:
             # Create a Q object to perform an OR operation (e.g., keywords in content or username)
-            search_condition = Q(content__icontains=search_query) | Q(user__username__icontains=search_query)
+            search_condition = (
+                    Q(content__icontains=search_query)
+                    | Q(user__username__icontains=search_query)
+                    | Q(hashtags__name__icontains=search_query)
+            )
             queryset = queryset.filter(search_condition)
 
         # Paginate the queryset
