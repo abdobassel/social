@@ -1,7 +1,7 @@
 from rest_framework import serializers
 
-from .models import Post, PostHashtag
-from ..users.models import User
+from social.posts.models import Post, PostHashtag
+from social.users.models import User
 
 
 class UserSerializer(serializers.ModelSerializer):
