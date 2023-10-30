@@ -31,6 +31,9 @@ class Post(models.Model):
 
 class PostHashtag(models.Model):
     name = models.CharField(max_length=100)
+    slug = models.SlugField(max_length=150, blank=True, null=True)
+    is_active = models.BooleanField(default=True)
+    hashtag_time = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
         return self.name
