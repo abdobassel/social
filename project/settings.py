@@ -144,6 +144,7 @@ LOGGING = {
 
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
 AUTH_USER_MODEL = "users.User"
+# LOGIN_REDIRECT_URL = "/"
 SIDE_ID = 1
 # Authentication cookies and JWT
 SIMPLE_JWT = {
@@ -161,7 +162,10 @@ AUTH_COOKIE_SAMESITE = "None"  # Strict if we have the same domain
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": ("social.users.authentications.CustomJWTAuthentication",),
     "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
-    "DEFAULT_RENDERER_CLASSES": ("rest_framework.renderers.JSONRenderer",),
+    "DEFAULT_RENDERER_CLASSES": (
+        "rest_framework.renderers.JSONRenderer",
+        "rest_framework.renderers.BrowsableAPIRenderer",
+    ),
     "DEFAULT_PARSER_CLASSES": ("rest_framework.parsers.JSONParser",),
 }
 DJOSER = {
