@@ -17,7 +17,7 @@ class PostHashtagSerializer(serializers.ModelSerializer):
 
 
 class PostSerializer(serializers.ModelSerializer):
-    # user = UserSerializer()
+    user = UserSerializer()
     hashtags = PostHashtagSerializer(many=True)
 
     class Meta:
