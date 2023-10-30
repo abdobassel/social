@@ -17,7 +17,7 @@ class PostListAPIView(APIView):
     @staticmethod
     def get(request, *args, **kwargs):
         paginator = PageNumberPagination()
-        paginator.page_size = 2
+        paginator.page_size = 4
 
         queryset = Post.objects.all().order_by("-timestamp")
         # Filter the queryset based on query parameters
