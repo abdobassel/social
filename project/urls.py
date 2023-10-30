@@ -9,7 +9,7 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("auth/", include("djoser.urls")),
     path("auth/", include("social.users.urls")),
-    path("posts/", include("social.posts.urls")),
+    path("posts/", include("social.posts.api.urls")),
 ]
 
 # Enable the debug toolbar only in DEBUG mode.
