@@ -67,6 +67,54 @@ class PostCreateAPIView(APIView):
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
+class PostUpdateAPIView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    @staticmethod
+    def put(request, post_id):
+        try:
+            post = Post.objects.get(id=post_id, user=request.user)
+            # Check if at least one of the two fields (content or image) is provided
+            if "content" not in request.data and "image" is None:
+                return Response(
+                    {"error": "You must provide either content or an image."},
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
+            # Use partial=True to allow partial updates
+            serializer = PostSerializer(post, data=request.data, partial=True)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        except Post.DoesNotExist:
+            return Response(
+                {"error": "Post not found or you don't have permission to update it."},
+                status=status.HTTP_404_NOT_FOUND,
+            )
+
+    @staticmethod
+    def patch(request, post_id):
+        try:
+            post = Post.objects.get(id=post_id, user=request.user)
+            # Check if at least one of the two fields (content or image) is provided
+            if "content" not in request.data and "image" is None:
+                return Response(
+                    {"error": "You must provide either content or an image."},
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
+            # Use partial=True to allow partial updates
+            serializer = PostSerializer(post, data=request.data, partial=True)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        except Post.DoesNotExist:
+            return Response(
+                {"error": "Post not found or you don't have permission to update it."},
+                status=status.HTTP_404_NOT_FOUND,
+            )
+
+
 class PostHashtagListAPIView(ListAPIView):
     serializer_class = PostHashtagSerializer
 
