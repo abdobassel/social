@@ -166,3 +166,4 @@ media
 .idea
 .DS_Store
 templates/.DS_Store
+old_code.py
