@@ -1,4 +1,6 @@
-from django.db.models import Q
+from django.db.models import Prefetch
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import filters as rest_filters
 from rest_framework import status
 from rest_framework.generics import ListAPIView
 from rest_framework.pagination import PageNumberPagination
@@ -8,39 +10,24 @@ from rest_framework.views import APIView
 
 from social.posts.models import Post, PostHashtag
 from .serializers import PostHashtagSerializer, PostSerializer
+from ..filters import PostFilter
+from ...users.models import User
 
 
 class PostListAPIView(APIView):
     permission_classes = [IsAuthenticated]
     serializer_class = PostSerializer
+    filter_backends = [DjangoFilterBackend, rest_filters.SearchFilter]
+    filterset_class = PostFilter
 
     @staticmethod
     def get(request, *args, **kwargs):
         paginator = PageNumberPagination()
-        paginator.page_size = 4
+        paginator.page_size = 5
 
-        queryset = Post.objects.all().order_by("-timestamp")
-        # Filter the queryset based on query parameters
-        user_id = request.query_params.get("user_id")
-        if user_id is not None:
-            try:
-                user_id = int(user_id)
-                queryset = queryset.filter(user=user_id)
-            except ValueError:
-                return Response(
-                    {"error": "Invalid user ID provided in query parameters."},
-                    status=status.HTTP_400_BAD_REQUEST,
-                )
-        # Search and Filtering
-        search_query = request.query_params.get("search", None)
-        if search_query:
-            # Create a Q object to perform an OR operation (e.g., keywords in content or username)
-            search_condition = (
-                    Q(content__icontains=search_query)
-                    | Q(user__username__icontains=search_query)
-                    | Q(hashtags__name__icontains=search_query)
-            )
-            queryset = queryset.filter(search_condition)
+        likes_prefetch = Prefetch("likes", queryset=User.objects.only("id"))
+        queryset = Post.objects.select_related().prefetch_related("hashtags", likes_prefetch).all().order_by(
+            "-timestamp")
 
         # Paginate the queryset
         page = paginator.paginate_queryset(queryset, request)
