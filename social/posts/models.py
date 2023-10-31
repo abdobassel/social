@@ -11,7 +11,7 @@ class Post(models.Model):
     user = models.ForeignKey("users.User", on_delete=models.CASCADE)
     content = models.TextField(max_length=500, blank=True, null=True)
     slug = models.SlugField(max_length=600, blank=True, null=True)
-    image = models.FileField(upload_to=post_photo_path, blank=True, null=True)
+    image = models.FileField(upload_to=post_photo_path, default="default_img.jpg", blank=True, null=True)
     likes = models.ManyToManyField("users.User", related_name="likes", blank=True)
     reposted = models.ManyToManyField("users.User", related_name="retested_posts", blank=True)
     replies = models.ManyToManyField("Post", related_name="replied_to", blank=True)

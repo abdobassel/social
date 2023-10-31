@@ -18,7 +18,7 @@ class PostHashtagSerializer(serializers.ModelSerializer):
 
 class PostSerializer(serializers.ModelSerializer):
     user = UserSerializer()
-    hashtags = PostHashtagSerializer(many=True, required=False)
+    hashtags = PostHashtagSerializer(many=True, required=False, allow_null=True)
 
     class Meta:
         model = Post
@@ -50,3 +50,12 @@ class PostSerializer(serializers.ModelSerializer):
         for hashtag_data in hashtags_data:
             hashtag, created = PostHashtag.objects.get_or_create(**hashtag_data)
             post.hashtags.add(hashtag)
+
+    @staticmethod
+    def get_image(obj):
+        return obj.image.url
+
+# {
+#     "user": {"id": 2, "username": "admin"},
+#     "content": "Move read sound glass example full.",
+# }

@@ -26,9 +26,14 @@ class PostListAPIView(APIView):
         paginator.page_size = 5
 
         likes_prefetch = Prefetch("likes", queryset=User.objects.only("id"))
-        queryset = Post.objects.select_related().prefetch_related("hashtags", likes_prefetch).all().order_by(
-            "-timestamp")
-
+        queryset = (
+            Post.objects.select_related()
+            .prefetch_related("hashtags", likes_prefetch)
+            .all()
+            .order_by(
+                "-timestamp",
+            )
+        )
         # Paginate the queryset
         page = paginator.paginate_queryset(queryset, request)
         if page is not None:
@@ -38,30 +43,29 @@ class PostListAPIView(APIView):
         return Response(serializer.data)
 
 
-class PostListCreateView(APIView):
+class PostCreateAPIView(APIView):
     permission_classes = [IsAuthenticated]
 
-    @staticmethod
-    def get(request, format=None):
-        # Get the queryset of posts and serialize them
-        queryset = Post.objects.order_by("-timestamp")
-        serializer = PostSerializer(queryset, many=True)
-        return Response(serializer.data)
+    # parser_classes = (MultiPartParser, FormParser)
 
     @staticmethod
-    def post(request, format=None):
-        # Create a new post using the request data
-        serializer = PostSerializer(data=request.data)
-        if serializer.is_valid():
-            serializer.save(user=request.user)
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+    def post(request):
+        try:
+            # Check if at least one of the two fields (content or image) is provided
+            if "content" not in request.data and "image" is None:
+                return Response({"error": "You must provide either content or an image."},
+                                status=status.HTTP_400_BAD_REQUEST)
+            serializer = PostSerializer(data=request.data)
+            if serializer.is_valid():
+                serializer.validated_data["user"] = request.user
+                serializer.save(user=request.user)
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
 class PostHashtagListAPIView(ListAPIView):
-    # queryset = PostHashtag.objects.all()
-    # serializer_class = PostHashtagSerializer
-
     serializer_class = PostHashtagSerializer
 
     @staticmethod
