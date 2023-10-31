@@ -115,6 +115,28 @@ class PostUpdateAPIView(APIView):
             )
 
 
+class PostDeleteAPIView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    @staticmethod
+    def delete(request, post_id):
+        try:
+            post = Post.objects.get(pk=post_id)
+            # Ensure the user has permission to delete the post (e.g., ownership check)
+            if post.user == request.user:
+                post.delete()
+                return Response(status=status.HTTP_204_NO_CONTENT)
+            else:
+                return Response(
+                    {"error": "You do not have permission to delete this post."},
+                    status=status.HTTP_403_FORBIDDEN,
+                )
+        except Post.DoesNotExist as e:
+            return Response({"error": "Post not found"}, status=status.HTTP_400_BAD_REQUEST)
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
 class PostHashtagListAPIView(ListAPIView):
     serializer_class = PostHashtagSerializer
 
