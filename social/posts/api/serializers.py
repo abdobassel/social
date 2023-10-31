@@ -54,8 +54,3 @@ class PostSerializer(serializers.ModelSerializer):
     @staticmethod
     def get_image(obj):
         return obj.image.url
-
-# {
-#     "user": {"id": 2, "username": "admin"},
-#     "content": "Move read sound glass example full.",
-# }
