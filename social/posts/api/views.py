@@ -138,16 +138,6 @@ class PostDeleteAPIView(APIView):
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 
-# class PostHashtagListAPIView(generics.ListAPIView):
-#     serializer_class = PostHashtagSerializer
-#
-#     @staticmethod
-#     def get(request, *args, **kwargs):
-#         queryset = PostHashtag.objects.all().order_by("-hashtag_time")
-#         serializer = PostHashtagSerializer(queryset, many=True)
-#         return Response(serializer.data)
-
-
 class PostHashtagResultsSetPagination(PageNumberPagination):
     page_size = 10
     page_size_query_param = "page_size"
