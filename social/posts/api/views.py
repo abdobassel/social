@@ -53,8 +53,10 @@ class PostCreateAPIView(APIView):
         try:
             # Check if at least one of the two fields (content or image) is provided
             if "content" not in request.data and "image" is None:
-                return Response({"error": "You must provide either content or an image."},
-                                status=status.HTTP_400_BAD_REQUEST)
+                return Response(
+                    {"error": "You must provide either content or an image."},
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
             serializer = PostSerializer(data=request.data)
             if serializer.is_valid():
                 serializer.validated_data["user"] = request.user
