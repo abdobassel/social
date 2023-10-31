@@ -1,16 +1,18 @@
 from django.db.models import Prefetch, Q
-from django.http import Http404
+from django.http import Http404, FileResponse
 from django_filters.rest_framework import DjangoFilterBackend
 from djoser.serializers import UserSerializer
 from rest_framework import filters as rest_filters, generics
 from rest_framework import status
+from rest_framework.generics import RetrieveAPIView, UpdateAPIView, DestroyAPIView
 from rest_framework.pagination import PageNumberPagination
+from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from social.posts.models import Post, PostHashtag
-from .serializers import PostHashtagSerializer, PostSerializer
+from .serializers import PostHashtagSerializer, PostSerializer, PostFileMediaSerializer
 from ..filters import PostFilter
 from ...users.models import User
 
@@ -44,26 +46,102 @@ class PostListAPIView(APIView):
         return Response(serializer.data)
 
 
+class PostPhotoAPIView(RetrieveAPIView, UpdateAPIView, DestroyAPIView):
+    queryset = Post.objects.all()
+    parser_classes = (MultiPartParser, FormParser)  # Support file uploads
+    serializer_class = PostSerializer
+
+    def retrieve(self, request, *args, **kwargs):
+        instance = self.get_object()
+        # Check if the user has a profile photo
+        if instance.post_photo:
+            # Return the profile photo as a FileResponse
+            photo_file = instance.post_photo.open()
+            response = FileResponse(photo_file)
+            return response
+        # If no photo is found, you can return a default image or 404,
+        # For example, you can create a "no image available" default image
+        # and serve it here as a response, or return a 404 response
+        return super().retrieve(request, *args, **kwargs)
+
+    def update(self, request, *args, **kwargs):
+        instance = self.get_object()
+        # Check if the user wants to update the photo
+        post_photo = request.FILES.get("post_photo")
+        if post_photo:
+            # Handle the file update logic here
+            # You can save the new photo, delete the old one, etc.
+            # For example, update the photo and save the instance
+            instance.post_photo = post_photo
+            instance.save()
+            # Serialize the updated instance and return it in the response
+            serializer = self.get_serializer(instance)
+            return Response(serializer.data)
+        return Response({"message": "No file provided for update"}, status=status.HTTP_400_BAD_REQUEST)
+
+    def destroy(self, request, *args, **kwargs):
+        instance = self.get_object()
+        # Check if the user wants to delete the photo
+        if instance.post_photo:
+            # Handle the file deletion logic here,
+            # For example, delete the photo file
+            # and set the post_photo field to None
+            instance.post_photo.delete(save=False)
+            instance.post_photo = None
+            instance.save()
+            return Response({"message": "Post photo deleted"}, status=status.HTTP_204_NO_CONTENT)
+        return Response({"message": "No photo to delete"}, status=status.HTTP_400_BAD_REQUEST)
+
+
 class PostCreateAPIView(APIView):
     permission_classes = [IsAuthenticated]
-
-    # parser_classes = (MultiPartParser, FormParser)
 
     @staticmethod
     def post(request):
         try:
-            # Check if at least one of the two fields (content or image) is provided
-            if "content" not in request.data and "image" is None:
+            post_data = request.data.copy()
+            if not ("content" in post_data):
                 return Response(
-                    {"error": "You must provide either content or an image."},
+                    {"error": "You must provide 'content' data"},
                     status=status.HTTP_400_BAD_REQUEST,
                 )
-            serializer = PostSerializer(data=request.data)
-            if serializer.is_valid():
-                serializer.validated_data["user"] = request.user
-                serializer.save(user=request.user)
-                return Response(serializer.data, status=status.HTTP_201_CREATED)
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            if "content" in post_data:
+                post_data["content"] = post_data.pop("content")  # Move content to the right field name
+            else:
+                return Response(post_data.errors, status=status.HTTP_400_BAD_REQUEST)
+            # Include the request in the context when initializing the serializer
+            post_serializer = PostSerializer(data=post_data, context={"request": request})
+            if post_serializer.is_valid():
+                post_serializer.validated_data["user"] = request.user
+                post_serializer.save(user=request.user)
+                return Response(post_serializer.data, status=status.HTTP_201_CREATED)
+            return Response(post_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        except Exception as e:
+            return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+class PostPhotoCreateAPIView(APIView):
+    parser_classes = (MultiPartParser, FormParser)
+    permission_classes = [IsAuthenticated]
+
+    @staticmethod
+    def post(request):
+        try:
+            if "post_photo" not in request.data:
+                return Response(
+                    {"error": "You must provide a 'photo' to create a post with a photo."},
+                    status=status.HTTP_400_BAD_REQUEST,
+                )
+
+            # Include the user in the request data based on the current user
+            post_data = {"user": request.user.id, "post_photo": request.data["post_photo"]}
+            post_serializer = PostFileMediaSerializer(data=post_data)
+
+            if post_serializer.is_valid():
+                post_serializer.save()
+                return Response(post_serializer.data, status=status.HTTP_201_CREATED)
+            return Response(post_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
@@ -132,7 +210,7 @@ class PostDeleteAPIView(APIView):
                     {"error": "You do not have permission to delete this post."},
                     status=status.HTTP_403_FORBIDDEN,
                 )
-        except Post.DoesNotExist as e:
+        except Post.DoesNotExist:
             return Response({"error": "Post not found"}, status=status.HTTP_400_BAD_REQUEST)
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
@@ -176,8 +254,10 @@ class UserListByHashtagAPIView(generics.GenericAPIView):
         try:
             # Retrieve posts that contain the specified hashtag
             hashtag = PostHashtag.objects.get(name=hashtag_name)
-            posts_with_hashtag = Post.objects.filter(Q(content__icontains=hashtag_name))
+            posts_with_hashtag = Post.objects.filter(Q(content__icontains=hashtag))
             # Extract the users from those posts
+            print(hashtag.users)
+            print(hashtag_name)
             users = User.objects.filter(post__in=posts_with_hashtag).distinct()
             return users
         except PostHashtag.DoesNotExist:

@@ -7,11 +7,15 @@ from .views import (
     PostListAPIView,
     PostUpdateAPIView,
     PostDeleteAPIView,
+    PostPhotoAPIView,
+    PostPhotoCreateAPIView,
 )
 
 urlpatterns = [
     path("post/", PostListAPIView.as_view(), name="post-list"),
-    path("C-/post/", PostCreateAPIView.as_view(), name="c-post-list"),
+    path("C-/post/", PostCreateAPIView.as_view(), name="create-post-list"),
+    path("C-/post/<int:pk>/", PostPhotoAPIView.as_view(), name="post-photo-update-delete"),
+    path("photo/create/", PostPhotoCreateAPIView.as_view(), name="create-post-with-photo"),
     path("U-/post/<int:post_id>/", PostUpdateAPIView.as_view(), name="post-update"),
     path("D-/post/<int:post_id>/", PostDeleteAPIView.as_view(), name="post-delete"),
     path("hashtags/", PostHashtagListRetrieveAPIView.as_view(), name="hashtag-list-retrieve"),

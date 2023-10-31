@@ -1,10 +1,11 @@
+from djoser.serializers import UserSerializer as PostUserSerializer
 from rest_framework import serializers
 
 from social.posts.models import Post, PostHashtag
 from social.users.models import User
 
 
-class UserSerializer(serializers.ModelSerializer):
+class UserSerializer(PostUserSerializer):
     class Meta:
         model = User
         fields = ["id", "username"]
@@ -16,8 +17,29 @@ class PostHashtagSerializer(serializers.ModelSerializer):
         fields = ["id", "name", "slug", "is_active"]
 
 
+class PostFileMediaSerializer(serializers.ModelSerializer):
+    # user = serializers.HyperlinkedRelatedField(view_name="user-detail", read_only=True)
+    post_photo = serializers.ImageField(max_length=None, allow_empty_file=False, use_url=True, required=False)
+
+    class Meta:
+        model = Post
+        fields = [
+            "id",
+            "post_photo",
+            "user",
+            "likes",
+            "hashtags",
+            "views",
+        ]
+
+    @staticmethod
+    def get_file_post(self, obj):
+        return obj.file_post.url
+
+
 class PostSerializer(serializers.ModelSerializer):
-    user = UserSerializer()
+    # user = serializers.HyperlinkedRelatedField(view_name="user-detail", read_only=True)
+    # post_photo = serializers.HyperlinkedRelatedField(view_name="photo-detail", read_only=True)
     hashtags = PostHashtagSerializer(many=True, required=False, allow_null=True)
 
     class Meta:
@@ -31,7 +53,7 @@ class PostSerializer(serializers.ModelSerializer):
             "timestamp",
             "hashtags",
             "content",
-            "image",
+            "post_photo",
         ]
 
     def create(self, validated_data):
@@ -51,6 +73,7 @@ class PostSerializer(serializers.ModelSerializer):
             hashtag, created = PostHashtag.objects.get_or_create(**hashtag_data)
             post.hashtags.add(hashtag)
 
-    @staticmethod
-    def get_image(obj):
-        return obj.image.url
+    def __init__(self, *args, **kwargs):
+        # Get the request from the serializer context
+        request = kwargs.pop("context", {}).get("request", None)
+        super(PostSerializer, self).__init__(*args, **kwargs, context={"request": request})
