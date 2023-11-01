@@ -1,7 +1,6 @@
-from django.db.models import Prefetch, Q
+from django.db.models import Prefetch
 from django.http import Http404, FileResponse
 from django_filters.rest_framework import DjangoFilterBackend
-from djoser.serializers import UserSerializer
 from rest_framework import filters as rest_filters, generics
 from rest_framework import status
 from rest_framework.generics import RetrieveAPIView, UpdateAPIView, DestroyAPIView
@@ -12,7 +11,7 @@ from rest_framework.response import Response
 from rest_framework.views import APIView
 
 from social.posts.models import Post, PostHashtag
-from .serializers import PostHashtagSerializer, PostSerializer, PostFileMediaSerializer
+from .serializers import PostHashtagSerializer, PostSerializer, PostFileMediaSerializer, UserSerializer
 from ..filters import PostFilter
 from ...users.models import User
 
@@ -252,11 +251,10 @@ class UserListByHashtagAPIView(generics.GenericAPIView):
         hashtag_name = self.kwargs["hashtag_name"]  # Extract the hashtag name from the URL parameter
         hashtag_name = hashtag_name if hashtag_name.startswith("#") else f"#{hashtag_name}"
         try:
-            # Retrieve posts that contain the specified hashtag
-            hashtag = PostHashtag.objects.get(name=hashtag_name)
-            posts_with_hashtag = Post.objects.filter(Q(content__icontains=hashtag))
+            # # Retrieve posts that contain the specified hashtag
+            posts_with_hashtag = Post.objects.filter(hashtags__name=hashtag_name)
             # Extract the users from those posts
-            print(hashtag.users)
+            print(hashtag_name)
             print(hashtag_name)
             users = User.objects.filter(post__in=posts_with_hashtag).distinct()
             return users
