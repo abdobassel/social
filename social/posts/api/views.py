@@ -46,7 +46,7 @@ class PostListAPIView(APIView):
         return Response(serializer.data)
 
 
-class PostPhotoAPIView(RetrieveAPIView, UpdateAPIView, DestroyAPIView):
+class PostPhotoRetrieveUpdateDestroyAPIView(RetrieveAPIView, UpdateAPIView, DestroyAPIView):
     queryset = Post.objects.all()
     parser_classes = (MultiPartParser, FormParser)  # Support file uploads
     serializer_class = PostSerializer
@@ -221,7 +221,7 @@ class PostHashtagResultsSetPagination(PageNumberPagination):
     page_size_query_param = "page_size"
 
 
-class PostHashtagListRetrieveAPIView(generics.ListCreateAPIView):
+class PostHashtagListCreateAPIView(generics.ListCreateAPIView):
     queryset = PostHashtag.objects.all().order_by("-hashtag_time")
     serializer_class = PostHashtagSerializer
     permission_classes = [IsAuthenticated]
