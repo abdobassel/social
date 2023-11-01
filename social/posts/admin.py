@@ -4,14 +4,18 @@ from .models import Post, PostHashtag
 
 
 class PostAdmin(admin.ModelAdmin):
-    list_display = ["short_content", "user", "timestamp", "views"]
+    list_display = ["short_content", "user", "timestamp", "views", "id"]
     list_per_page = 13
+
     def short_content(self, obj):
-        words = obj.content.split()
-        short_content = " ".join(words[:5])
-        if len(words) > 5:
-            short_content += " ..."
-        return short_content
+        if obj.content:
+            words = obj.content.split()
+            short_content = " ".join(words[:5])
+            if len(words) > 5:
+                short_content += " ..."
+            return short_content
+        else:
+            return None
 
     short_content.short_description = "Short Content"
 
