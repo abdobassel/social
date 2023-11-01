@@ -10,6 +10,7 @@ class CustomUserAdmin(UserAdmin):
     form = CustomUserChangeForm
     model = User
     list_display = ["email", "username", "is_active", "slug"]
+    list_per_page = 15
 
 
 admin.site.register(User, CustomUserAdmin)
