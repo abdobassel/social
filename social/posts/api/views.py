@@ -26,7 +26,6 @@ class PostListAPIView(APIView):
     def get(request, *args, **kwargs):
         paginator = PageNumberPagination()
         paginator.page_size = 5
-
         likes_prefetch = Prefetch("likes", queryset=User.objects.only("id"))
         queryset = (
             Post.objects.select_related()
@@ -131,16 +130,13 @@ class PostPhotoCreateAPIView(APIView):
                     {"error": "You must provide a 'photo' to create a post with a photo."},
                     status=status.HTTP_400_BAD_REQUEST,
                 )
-
             # Include the user in the request data based on the current user
             post_data = {"user": request.user.id, "post_photo": request.data["post_photo"]}
             post_serializer = PostFileMediaSerializer(data=post_data)
-
             if post_serializer.is_valid():
                 post_serializer.save()
                 return Response(post_serializer.data, status=status.HTTP_201_CREATED)
             return Response(post_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
         except Exception as e:
             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
