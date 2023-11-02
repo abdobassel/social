@@ -3,15 +3,6 @@ from django.db import models
 from social.utils.profile_photo_api import post_photo_path
 
 
-# class PostFileMedia(models.Model):
-#     file_post = models.FileField(upload_to=post_photo_path, default="default_img.jpg", blank=True, null=True)
-#     is_active = models.BooleanField(default=True)
-#     file_time = models.DateTimeField(auto_now_add=True)
-#
-#     def __str__(self):
-#         return str(f"{self.file_post.name}")
-
-
 class Post(models.Model):
     class Visibility(models.TextChoices):
         ONLY_ME = "ONY", "Only Me"
