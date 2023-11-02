@@ -10,32 +10,60 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
 
-from social.posts.models import Post, PostHashtag
+from social.posts.models import Post, PostHashtag, Like
 from .serializers import PostHashtagSerializer, PostSerializer, PostFileMediaSerializer, UserSerializer
 from ..filters import PostFilter
 from ...users.models import User
 
 
 class LikePostAPIView(APIView):
+    # @staticmethod
+    # def post(request, post_id):
+    #     post = Post.objects.get(pk=post_id)
+    #     user = request.user
+    #
+    #     if user in post.likes.all():  # User has already liked the post, so remove the like
+    #         post.likes.remove(user)
+    #         message = "You've unliked the post."
+    #     else:  # User hasn't liked the post, so add the like
+    #         post.likes.add(user)
+    #         message = "You've liked the post."
+    #
+    #     # Calculate the like count
+    #     likes_count = post.likes.count()
+    #     # Update the likes_count field in the Post model
+    #     post.likes_count = likes_count
+    #     post.save()
+    #     # Serialize the post
+    #     serializer = PostSerializer(post)
+    #     return Response(
+    #         {"message": message, "post": serializer.data, "likes_count": likes_count},
+    #         status=status.HTTP_200_OK,
+    #     )
+
     @staticmethod
     def post(request, post_id):
         post = Post.objects.get(pk=post_id)
         user = request.user
 
-        if user in post.likes.all():  # User has already liked the post, so remove the like
-            post.likes.remove(user)
+        # Check if the user has already liked the post
+        existing_like = Like.objects.filter(user=user, post=post).first()
+        if existing_like:
+            # User has already liked the post, so remove the like
+            existing_like.delete()
             message = "You've unliked the post."
-        else:  # User hasn't liked the post, so add the like
-            post.likes.add(user)
+        else:
+            # User hasn't liked the post, so add the like
+            Like.objects.create(user=user, post=post)
             message = "You've liked the post."
-
-        # Calculate the like count
-        likes_count = post.likes.count()
+        # Calculate the like's count
+        likes_count = Like.objects.filter(post=post).count()
         # Update the likes_count field in the Post model
         post.likes_count = likes_count
         post.save()
         # Serialize the post
         serializer = PostSerializer(post)
+
         return Response(
             {"message": message, "post": serializer.data, "likes_count": likes_count},
             status=status.HTTP_200_OK,

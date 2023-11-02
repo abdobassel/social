@@ -3,6 +3,15 @@ from django.db import models
 from social.utils.profile_photo_api import post_photo_path
 
 
+class Like(models.Model):
+    user = models.ForeignKey("users.User", on_delete=models.CASCADE)
+    post = models.ForeignKey("Post", on_delete=models.CASCADE)
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return str(f"{self.user}")
+
+
 class Post(models.Model):
     class Visibility(models.TextChoices):
         ONLY_ME = "ONY", "Only Me"
@@ -12,7 +21,7 @@ class Post(models.Model):
     content = models.TextField(max_length=500, blank=True, null=True)
     slug = models.SlugField(max_length=600, blank=True, null=True)
     post_photo = models.ImageField(upload_to=post_photo_path, blank=True, null=True)
-    likes = models.ManyToManyField("users.User", related_name="likes", blank=True)
+    likes = models.ManyToManyField("users.User", through=Like, related_name="liked_posts", blank=True)
     reposted = models.ManyToManyField("users.User", related_name="retested_posts", blank=True)
     replies = models.ManyToManyField("Post", related_name="replied_to", blank=True)
     mentions = models.ManyToManyField("users.User", related_name="mentioned_in_post", blank=True)

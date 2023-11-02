@@ -79,5 +79,5 @@ class PostSerializer(serializers.ModelSerializer):
 
     @staticmethod
     def get_likes_count(obj):
-        # Calculate the like count for the post
+        # Calculate the likes count for the post
         return obj.likes.count()
