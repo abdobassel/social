@@ -18,7 +18,6 @@ class PostHashtagSerializer(serializers.ModelSerializer):
 
 
 class PostFileMediaSerializer(serializers.ModelSerializer):
-    # user = serializers.HyperlinkedRelatedField(view_name="user-detail", read_only=True)
     post_photo = serializers.ImageField(max_length=None, allow_empty_file=False, use_url=True, required=False)
 
     class Meta:
@@ -38,8 +37,6 @@ class PostFileMediaSerializer(serializers.ModelSerializer):
 
 
 class PostSerializer(serializers.ModelSerializer):
-    # user = serializers.HyperlinkedRelatedField(view_name="user-detail", read_only=True)
-    # post_photo = serializers.HyperlinkedRelatedField(view_name="photo-detail", read_only=True)
     hashtags = PostHashtagSerializer(many=True, required=False, allow_null=True)
 
     class Meta:
