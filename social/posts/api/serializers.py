@@ -38,6 +38,7 @@ class PostFileMediaSerializer(serializers.ModelSerializer):
 
 class PostSerializer(serializers.ModelSerializer):
     hashtags = PostHashtagSerializer(many=True, required=False, allow_null=True)
+    likes_count = serializers.SerializerMethodField()
 
     class Meta:
         model = Post
@@ -45,6 +46,7 @@ class PostSerializer(serializers.ModelSerializer):
             "id",
             "user",
             "likes",
+            "likes_count",
             "views",
             "visibility",
             "timestamp",
@@ -74,3 +76,8 @@ class PostSerializer(serializers.ModelSerializer):
         # Get the request from the serializer context
         request = kwargs.pop("context", {}).get("request", None)
         super(PostSerializer, self).__init__(*args, **kwargs, context={"request": request})
+
+    @staticmethod
+    def get_likes_count(obj):
+        # Calculate the like count for the post
+        return obj.likes.count()

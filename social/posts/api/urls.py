@@ -9,6 +9,7 @@ from .views import (
     PostDeleteAPIView,
     PostPhotoRetrieveUpdateDestroyAPIView,
     PostPhotoCreateAPIView,
+    LikePostAPIView,
 )
 
 urlpatterns = [
@@ -20,4 +21,5 @@ urlpatterns = [
     path("D-/post/<int:post_id>/", PostDeleteAPIView.as_view(), name="post-delete"),
     path("hashtags/", PostHashtagListCreateAPIView.as_view(), name="hashtag-list-retrieve"),
     path("hashtags/<str:hashtag_name>/users/", UserListByHashtagAPIView.as_view(), name="user-list-by-hashtag"),
+    path("like/<int:post_id>/", LikePostAPIView.as_view(), name="like-post"),
 ]
