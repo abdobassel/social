@@ -7,6 +7,7 @@ class UserProfilesAdmin(admin.ModelAdmin):
     list_display = ["id", "user", "timestamp", "city"]
     list_filter = ["user"]
     search_fields = ["user__username", "phone_number"]
+    list_display_links = ["id", "user"]
     list_per_page = 10
 
 
