@@ -15,12 +15,12 @@ def create_user_profile(sender, instance, created, **kwargs):
         Profile.objects.create(user=instance)
 
 
-@receiver(post_save, sender=User)
-def save_user_profile(sender, instance, created, **kwargs):
-    """
-    Signal handler to create a user profile when a new user is created.
-    """
-    instance.profile.save()
+# @receiver(post_save, sender=User)
+# def save_user_profile(sender, instance, created, **kwargs):
+#     """
+#     Signal handler to create a user profile when a new user is created.
+#     """
+#     instance.profile.save()
 
 
 @receiver(pre_save, sender=User)

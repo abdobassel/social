@@ -6,7 +6,7 @@ from social.utils.profile_photo_api import profile_photo_path
 
 
 class Profile(models.Model):
-    user = models.OneToOneField("users.User", on_delete=models.CASCADE)
+    user = models.OneToOneField("users.User", related_name="userprofiles", on_delete=models.CASCADE)
     slug = models.SlugField(unique=True, blank=True, null=True)
     profile_photo = models.ImageField(upload_to=profile_photo_path, default="profile_default.png")
     bio = models.TextField(max_length=300, blank=True)

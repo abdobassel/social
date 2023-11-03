@@ -1,6 +1,6 @@
 from django.db import models
 
-from social.utils.profile_photo_api import post_photo_path
+from social.utils.post_file_api import post_photo_path
 
 
 class Like(models.Model):
