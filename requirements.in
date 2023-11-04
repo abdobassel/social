@@ -10,6 +10,7 @@ django-simple-history==3.4.0
 django-countries==7.5.1
 django-debug-toolbar==4.2.0
 django-denied==1.2
+django-hashid-field==3.3.7
 
 factory-boy==3.3.0
 pytest-django==4.5.2
