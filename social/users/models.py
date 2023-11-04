@@ -12,6 +12,7 @@ class User(DjangoAbstractUser, DjangoPermissionsMixin):
         FEMALE = "F", "Female"
         PREFER_NOT_TO_SAY = "X", "Prefer not to say"
 
+    # reference_id = HashidAutoField(primary_key=True, salt=f"users{settings.HASHID_FIELD_SALT}")
     email = models.EmailField(max_length=100, unique=True)
     username = models.CharField(max_length=100, blank=True)
     first_name = models.CharField(max_length=30)

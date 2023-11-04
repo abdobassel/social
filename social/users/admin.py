@@ -9,7 +9,7 @@ class CustomUserAdmin(UserAdmin):
     add_form = CustomUserCreationForm
     form = CustomUserChangeForm
     model = User
-    list_display = ["email", "username", "is_active", "slug"]
+    list_display = ["id", "email", "username", "is_active", "slug"]
     list_per_page = 15
 
 

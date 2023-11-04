@@ -55,6 +55,7 @@ class ProfileUpdateAPIView(generics.RetrieveAPIView):
 
 class ProfilePhotoAPIView(generics.RetrieveAPIView, generics.UpdateAPIView, generics.DestroyAPIView):
     queryset = Profile.objects.all()
+    authentication_classes = (CustomJWTAuthentication,)
     permission_classes = (IsAuthenticated,)
     renderer_classes = (JSONRenderer,)
     parser_classes = (MultiPartParser, FormParser)  # Support file uploads
