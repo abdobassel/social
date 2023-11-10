@@ -15,6 +15,20 @@ class Profile(models.Model):
     phone_number = modelfields.PhoneNumberField(blank=True)  # country code, national_number
     timestamp = models.DateTimeField(auto_now_add=True)
     birthday = models.DateField(auto_now=False, null=True)
+    # Followers
+    followers = models.ManyToManyField("self", symmetrical=False, related_name="following", blank=True)
+
+    def follow(self, userprofiles):
+        self.followers.add(userprofiles)
+
+    def unfollow(self, userprofiles):
+        self.followers.remove(userprofiles)
+
+    def check_followers(self, userprofiles):
+        return self.followers.filter(id=userprofiles.id).exists()
+
+    def followers_count(self):
+        return self.followers.count()
 
     def __str__(self):
         return f"{self.user.username}"
