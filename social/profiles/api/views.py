@@ -5,6 +5,7 @@ from rest_framework.permissions import IsAuthenticated
 from rest_framework.renderers import JSONRenderer
 from rest_framework.response import Response
 
+from social.profiles.api.paginations import ProfileSetPagination
 from social.profiles.api.serializers import ProfileSerializer, UpdateProfileSerializer
 from social.profiles.models import Profile
 from social.users.authentications import CustomJWTAuthentication
@@ -12,10 +13,10 @@ from social.users.authentications import CustomJWTAuthentication
 
 class ProfileListAPIView(generics.ListAPIView):
     queryset = Profile.objects.all()
-    # authentication_classes = (CustomJWTAuthentication,)
     permission_classes = (IsAuthenticated,)
     serializer_class = ProfileSerializer
-    # renderer_classes = (JSONRenderer,)
+    renderer_classes = (JSONRenderer,)
+    pagination_class = ProfileSetPagination
 
 
 class ProfileRetrieveAPIView(generics.RetrieveAPIView):
@@ -35,7 +36,7 @@ class ProfileRetrieveAPIView(generics.RetrieveAPIView):
 
 
 class ProfileUpdateAPIView(generics.RetrieveAPIView):
-    authentication_classes = [CustomJWTAuthentication]
+    # authentication_classes = [CustomJWTAuthentication]
     permission_classes = [IsAuthenticated]
     serializer_class = UpdateProfileSerializer
     parser_classes = [MultiPartParser]
