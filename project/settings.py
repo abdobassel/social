@@ -32,6 +32,7 @@ INSTALLED_APPS = [
     "djoser",
     "django_extensions",
     "django_filters",
+    "corsheaders",
     "crispy_forms",
     "crispy_bootstrap5",
     "django_countries",
@@ -44,6 +45,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     "django.middleware.security.SecurityMiddleware",
     "django.contrib.sessions.middleware.SessionMiddleware",
+    "corsheaders.middleware.CorsMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
@@ -192,3 +194,6 @@ GRAPH_MODELS = {
     "rankdir": "BT",
     "output": "models.png",
 }
+
+CORS_ALLOWED_ORIGINS = ("http://127.0.0.1:3000", "http://localhost:3000")
+CORS_ALLOW_CREDENTIALS = True
