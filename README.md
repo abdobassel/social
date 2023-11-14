@@ -1,4 +1,5 @@
 # Welcome to social 🚀🔥
+
 # social - Fast and Friendly Chat App
 
 ## Introduction
@@ -110,28 +111,33 @@ Before diving into social development, ensure you have the following prerequisit
     python manage.py runserver
     ```
 
-   - social should now be running locally at http://127.0.0.1:8000/
+    - social should now be running locally at http://127.0.0.1:8000/
 
 
 5. Access the Admin Interface:
    Access the Django admin interface at http://127.0.0.1:8000/admin/ and log in with the superuser credentials you
    created earlier. Here, you can manage social data and configurations.
 
-- This "Getting Started with social Django Development" section provides developers with the steps and requirements to begin developing social with Django. You can customize it further based on your specific development workflow and project requirements.
-
+- This "Getting Started with social Django Development" section provides developers with the steps and requirements to
+  begin developing social with Django. You can customize it further based on your specific development workflow and
+  project requirements.
 
 ## Community and Support
 
-Join our vibrant developer community on [GitHub](https://github.com/hudy0000/social/issues) to access our API documentation and share feedback,
-issues, or contributions. 
-For personalized support or inquiries, please contact our dedicated [support team](mailto:support@social.com).
+Join our vibrant developer community on [GitHub](https://github.com/hudy0000/social/issues) to access our API
+documentation and share feedback,
+issues, or contributions.
+
+[//]: # (For personalized support or inquiries, please contact our dedicated [support team]&#40;mailto:support@social.com&#41;.)
 
 ## Licensing
 
-social is licensed under [Open Source License](https://github.com//hudy0000/social/blob/main/LICENSE), providing flexibility for developers to customize and
+social is licensed under [Open Source License](https://github.com//hudy0000/social/blob/main/LICENSE), providing
+flexibility for developers to customize and
 extend the application to meet their unique requirements.
 
 ### [Contribution Guidelines](https://github.com//hudy0000/social/blob/main/CONTRIBUTION.md)
+
 ### [Code of Conduct](https://github.com//hudy0000/social/blob/main/CODEE_OF_CONDUCT.md)
 
 ## Conclusion
