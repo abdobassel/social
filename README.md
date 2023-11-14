@@ -122,17 +122,17 @@ Before diving into social development, ensure you have the following prerequisit
 
 ## Community and Support
 
-Join our vibrant developer community on [GitHub](https://github.com/hudaifa-dev/snap-talk/issues) to access our API documentation and share feedback,
-issues, or contributions. For personalized support or inquiries, please contact our
-dedicated [support team](mailto:support@snap-talk.com).
+Join our vibrant developer community on [GitHub](https://github.com/hudy0000/social/issues) to access our API documentation and share feedback,
+issues, or contributions. 
+For personalized support or inquiries, please contact our dedicated [support team](mailto:support@social.com).
 
 ## Licensing
 
-social is licensed under [Open Source License](https://github.com/hudaifa-dev/snap-talk/blob/main/LICENSE), providing flexibility for developers to customize and
+social is licensed under [Open Source License](https://github.com//hudy0000/social/blob/main/LICENSE), providing flexibility for developers to customize and
 extend the application to meet their unique requirements.
 
-### [Contribution Guidelines](https://github.com/hudaifa-dev/snap-talk/blob/main/CONTRIBUTION.md)
-### [Code of Conduct](https://github.com/hudaifa-dev/snap-talk/blob/main/CODEE_OF_CONDUCT.md)
+### [Contribution Guidelines](https://github.com//hudy0000/social/blob/main/CONTRIBUTION.md)
+### [Code of Conduct](https://github.com//hudy0000/social/blob/main/CODEE_OF_CONDUCT.md)
 
 ## Conclusion
 
