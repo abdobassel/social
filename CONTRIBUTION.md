@@ -24,7 +24,7 @@ feature, please open a feature request on our [GitHub Issues](https://github.com
 ### Pull Requests
 
 If you have code improvements, bug fixes, or new features to contribute to SnapTalk, we encourage you to submit a pull
-request on our [GitHub repository](https://github.com/hudy000/pulls). Please follow these guidelines:
+request on our [GitHub repository](https://github.com/hudy0000/social/pulls). Please follow these guidelines:
 
 - Fork our repository and create a branch for your changes.
 - Write clean, well-documented code.
