@@ -40,7 +40,7 @@ INSTALLED_APPS = [
     "social.users",
     "social.profiles",
     "social.posts",
-    "social.messages",
+    "social.private_message",
 ]
 
 MIDDLEWARE = [
