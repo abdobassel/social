@@ -15,6 +15,7 @@ class PrivateMessage(models.Model):
     )
     subject = models.CharField(max_length=100)
     body = models.TextField()
+    timestamp = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         default_related_name = "private_messages"
