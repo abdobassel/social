@@ -7,10 +7,12 @@ from django.urls import include, path
 urlpatterns = [
     path("api-auth/", include("rest_framework.urls")),
     path("admin/", admin.site.urls),
-    path("api/", include("djoser.urls")),
-    path("api/", include("social.users.urls")),
+    path("auth/", include("djoser.urls")),
+    # LOCAL APPS
+    path("auth/", include("social.users.urls")),
     path("posts/", include("social.posts.api.urls")),
     path("profiles/", include("social.profiles.api.urls")),
+    path("messages/", include("social.private_message.api.urls")),
 ]
 
 # Enable the debug toolbar only in DEBUG mode.
