@@ -41,6 +41,7 @@ django==4.2.7
     #   djangorestframework
     #   djangorestframework-simplejwt
     #   djoser
+    #   model-bakery
     #   social-auth-app-django
 django-countries==7.5.1
     # via -r requirements.in
@@ -96,6 +97,8 @@ inflection==0.5.1
     # via pytest-factoryboy
 iniconfig==2.0.0
     # via pytest
+model-bakery==1.17.0
+    # via -r requirements.in
 oauthlib==3.2.2
     # via
     #   requests-oauthlib
