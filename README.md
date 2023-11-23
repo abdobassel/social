@@ -6,7 +6,7 @@
 
 Welcome to social, an advanced chat application meticulously designed to deliver a superior messaging experience.
 Whether you're connecting with friends, family, or colleagues, social sets the standard for seamless, secure, and
-feature-rich communication.
+feature-rich communication..
 
 ## Key Features
 
