@@ -7,6 +7,7 @@ def get_post_filename_extension(filepath):
     return name, ext
 
 
+
 def post_photo_path(instance, filename, **kwargs):
     new_filename = instance.id
     # final_filename = instance.user.username
